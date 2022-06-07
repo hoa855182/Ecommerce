@@ -1,11 +1,20 @@
+import axios from 'axios'
+import AppRouter from './routes'
 
-import AppRouter from "./routes";
+
+
+
+
+
 
 
 function App() {
   return (
-    <AppRouter/>
-  );
+    <div>
+      <AppRouter />
+     
+    </div>
+  )
 }
 
-export default App;
+export default App
