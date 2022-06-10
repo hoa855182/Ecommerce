@@ -1,8 +1,9 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import swal from 'sweetalert'
 function Register() {
+  const navigate = useNavigate()
   const [register, setRegister] = useState({
     name: '',
     email: '',
@@ -16,102 +17,101 @@ function Register() {
   }
 
   const registerSubmit = (e) => {
-    e.prevenDefault()
-
+  
+    e.preventDefault()
+    
     const data = {
       name: register.name,
       email: register.email,
       password: register.password,
+      
     }
-
-    axios.get('/sanctum/csrf-cookie').then((response) => {
-      axios.post(`http://127.0.0.1:8000/api/register`, data).then((res) => {
-        
-      })
-    })
+    console.log(data)
+    
+    axios.get('/sanctum/csrf-cookie').then(response => {
+      console.log(response);
+       axios.post(`/api/register`, data).then(res=>{
+          if(res.data.status===200){
+              localStorage.setItem('auth_token',res.data.token)
+              localStorage.setItem('auth_name',res.data.username)
+              swal("Success",res.data.message,"success")
+              navigate("/")
+          }
+          else{
+              setRegister({
+                  ...register,
+                  error_list:res.data.validation_errors
+              })
+          }
+        })
+     
+    });
+    
   }
-
+  
   return (
     <div id="layoutAuthentication">
       <div id="layoutAuthentication_content">
-        <main>
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-lg-7">
-                <div className="card shadow-lg border-0 rounded-lg mt-5">
-                  <div className="card-header">
-                    <h3 className="text-center font-weight-light my-4">Create Account</h3>
-                  </div>
-                  <div className="card-body">
-                    <form onSubmit={registerSubmit}>
-                      <div className="row mb-3">
-                        <div className="col-md-12">
-                          <div className="form-floating mb-3 mb-md-0">
-                            <input
-                              onChange={handleInput}
-                              value={register.name}
-                              name="name"
-                              className="form-control"
-                              id="inputFirstName"
-                              type="text"
-                              placeholder="Enter your first name"
-                            />
-                            <label>Full name</label>
-                            <span>{register.error_list.name}</span>
+        <div className='container py-5'>
+          <div className='row justify-content-center'>
+              <div className='col-md-6'>
+                  <div className='card'>
+                      <div className='card-header'>
+                          <h4 className="text-center font-weight-light my-4">
+                              Register
+                          </h4>
+                      </div>
+                      <div className='card-body'>
+                          <form onSubmit={registerSubmit}>
+                              <div className='form-group mb-3'>
+                                  <label>Full Name</label>
+                                  <input
+                                      type = ""
+                                      name ='name'
+                                      onChange={handleInput}
+                                      value = {register.name}
+                                      className="form-control"
+                                  ></input>
+                                  <span>{register.error_list.name}</span>
+                              </div>
+                              <div className='form-group mb-3'>
+                                  <label>Email</label>
+                                  <input
+                                      type = ""
+                                      name ='email'
+                                      onChange={handleInput}
+                                      value = {register.email}
+                                      className="form-control"
+                                  ></input>
+                                  <span>{register.error_list.email}</span>
+                              </div>
+                              <div className='form-group mb-3'>
+                                  <label>Password</label>
+                                  <input
+                                      type = ""
+                                      name ='password'
+                                      onChange={handleInput}
+                                      value = {register.password}
+                                      className="form-control"
+                                  ></input>
+                                  <span>{register.error_list.password}</span>
+                              </div>
+                              <div className='form-group mb-8'>
+                                  <button type= "submit" className='btn btn-primary'>Sign up</button>
+                              </div>
+                          </form>
+                      </div>
+                      <div className="card-footer text-center py-3">
+                          <div className="small">
+                          <Link to="/Login">Have an account? Go to login</Link>
                           </div>
-                        </div>
                       </div>
-                      <div className="form-floating mb-3">
-                        <input
-                          onChange={handleInput}
-                          value={register.email}
-                          name="email"
-                          className="form-control"
-                          id="inputEmail"
-                          type="email"
-                          placeholder="name@example.com"
-                        />
-                        <label>Email address</label>
-                        <span>{register.error_list.email}</span>
-                      </div>
-                      <div className="row mb-3">
-                        <div className="col-md-12">
-                          <div className="form-floating mb-3 mb-md-0">
-                            <input
-                              onChange={handleInput}
-                              value={register.password}
-                              name="password"
-                              className="form-control"
-                              id="inputPassword"
-                              type="password"
-                              placeholder="Password"
-                            />
-                            <label>Password</label>
-                            <span>{register.error_list.password}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-4 mb-0">
-                        <div className="d-grid">
-                          <button type="submit" className="btn btn-primary btn-block">
-                            Create Account
-                          </button>
-                        </div>
-                      </div>
-                    </form>
                   </div>
-                  <div className="card-footer text-center py-3">
-                    <div className="small">
-                      <Link to="/Login">Have an account? Go to login</Link>
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
           </div>
-        </main>
       </div>
-      <div id="layoutAuthentication_footer">
+      </div>
+      <div>
         <footer className="py-4 bg-dark mt-auto">
           <div className="container-fluid px-4">
             <div className="d-flex align-items-center justify-content-between small">
@@ -129,4 +129,4 @@ function Register() {
   )
 }
 
-export default Register
+export default Register;

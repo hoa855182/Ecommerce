@@ -11314,6 +11314,10 @@ body {
   background-image: url('../assets/img/bw1.jpg');
   
 }
+
+.bg{
+  background-image: url('../assets/img/bw1.jpg');
+}
 #layoutAuthentication #layoutAuthentication_content {
   min-width: 0;
   flex-grow: 1;
