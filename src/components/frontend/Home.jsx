@@ -10,11 +10,12 @@ import Test from '../../layout/frontend/Test'
 
 const Home = () => {
   return(
-   checkAuth( <div>
+   
+    <div>
         <NavBarHome/>
-        
         Home Page
-    </div>)
+    </div>
+  
   ) 
 }
 

@@ -9,5 +9,6 @@ export const checkAuth = (Component) => {
 }
 
 export const checkLogin = (Component) => {
-    return !isLogin() ? <Navigate to={'/'} /> : Component
+    return !isLogin() ? <Navigate to={'/Login'} /> : Component
 }
+
