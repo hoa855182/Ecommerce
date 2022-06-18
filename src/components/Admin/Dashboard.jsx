@@ -1,8 +1,9 @@
 import React from 'react'
+import { checkLogin } from '../../config/function'
 import MainLayout from '../../layout/admin/MainLayout'
 
-function Dashboard() {
-  return <MainLayout>Dashboard</MainLayout>
+const Dashboard = () => {
+  return checkLogin( <MainLayout>Dashboard</MainLayout>)
 }
 
 export default Dashboard
